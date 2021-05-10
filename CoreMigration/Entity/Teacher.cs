@@ -13,6 +13,6 @@ namespace CoreMigration.Entity
 
         public string Surname { get; set; }
 
-        public string Departmant { get; set; }
+        public string Departmant { get; set; } //Eklendi.
     }
 }
