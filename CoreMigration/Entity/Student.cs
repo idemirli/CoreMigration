@@ -11,9 +11,9 @@ namespace CoreMigration.Entity
 
         public string Name { get; set; }
 
-        public string Surname { get; set; }
+        public string Surname { get; set; }  //surname
 
-        public string TelNo { get; set; }
+        public string TelNo { get; set; } //telno
 
         public string address { get; set; } //yeni eklendi
     }
