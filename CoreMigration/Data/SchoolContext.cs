@@ -15,10 +15,8 @@ namespace CoreMigration.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<User> Users { get; set; }
-
         public DbSet<Lesson> Lessons { get; set; }
 
-        public DbSet<LessonToStudent> LessonToStudents { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{

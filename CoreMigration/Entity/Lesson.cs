@@ -11,7 +11,7 @@ namespace CoreMigration.Entity
 
         public string Name { get; set; }
 
-        
+        public List<Student> Student { get; set; }
 
     }
 }

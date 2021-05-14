@@ -2,6 +2,7 @@
 using CoreMigration.Entity;
 using CoreMigration.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -25,9 +26,15 @@ namespace CoreMigration.Controllers
 
         public IActionResult Index()
         {
+            DeleteFromTables();
+            AddStudentsAndUsers(); //bire-bir
+            AddLessonToStudent();   //çoka-çok
 
-            //AddStudentsAndUsers(); bire-bir
-            //AddLessonToStudent();  çoka-çok
+            //Çoka-çok ilişkiyi görmek için
+            List<Student> lstStudent = _context.Students.ToList();
+            var students = _context.Students.AsQueryable();
+            students = students.Include(x => x.Lesson).Where(y => y.Lesson.Any(z => z.Id == 2));
+            
             return View();
         }
 
@@ -40,6 +47,15 @@ namespace CoreMigration.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public void DeleteFromTables()
+        {
+            List<Student> lstStudent = _context.Students.ToList();
+            List<User> lstUsers = _context.Users.ToList();
+            _context.Students.RemoveRange(lstStudent.ToArray());
+            _context.Users.RemoveRange(lstUsers.ToArray());
+            _context.SaveChanges();
         }
 
         public void AddStudentsAndUsers() 
@@ -57,16 +73,14 @@ namespace CoreMigration.Controllers
 
         public void AddLessonToStudent()
         {
+            List<Department> departments = _context.Departments.ToList();
+            List<Student> lstStudent = _context.Students.ToList();
+            List<User> users = _context.Users.ToList();
+            List<Lesson> lstLesson = new List<Lesson>() { new Lesson() { Name="Algoritma", Student=lstStudent }, new Lesson() { Name="Veri Yapıları",Student=lstStudent } };
 
-            List<LessonToStudent> lessonToStudents = new List<LessonToStudent>() {
-            
-             new LessonToStudent() { Lesson=new Lesson{ Name="Algoritma" }, Student= new Student() { Name="kazım", Surname="duman", address="gdfg", TelNo="8989", DepartmentId=1,User= new User(){ Name="kazım", TcNo="887" }  } },
-             new LessonToStudent() { Lesson=new Lesson{ Name="Veri Yapıları" }, Student= new Student() { Name="serdar", Surname="boz", address="gfhgf", TelNo="454", DepartmentId=2,User= new User(){ Name="serdar", TcNo="9967" }  } }
-            };
-
-            foreach (LessonToStudent item in lessonToStudents)
+            foreach (Lesson item in lstLesson)
             {
-                _context.LessonToStudents.Add(item);
+                _context.Lessons.Add(item);
                 _context.SaveChanges();
             }
         }

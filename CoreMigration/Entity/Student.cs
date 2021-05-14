@@ -31,5 +31,9 @@ namespace CoreMigration.Entity
         public int UserId { get; set; } //bire-bir ilişki
 
         #endregion
+
+        #region [Çoka-çok İlişki]
+        public List<Lesson> Lesson { get; set; } //çoka-çok ilişki
+        #endregion
     }
 }

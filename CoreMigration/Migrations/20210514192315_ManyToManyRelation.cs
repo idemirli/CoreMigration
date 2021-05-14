@@ -20,26 +20,23 @@ namespace CoreMigration.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LessonToStudents",
+                name: "LessonStudent",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StudentId = table.Column<int>(type: "int", nullable: false),
                     LessonId = table.Column<int>(type: "int", nullable: false),
-                    LessonName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    StudentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LessonToStudents", x => x.Id);
+                    table.PrimaryKey("PK_LessonStudent", x => new { x.LessonId, x.StudentId });
                     table.ForeignKey(
-                        name: "FK_LessonToStudents_Lessons_LessonId",
+                        name: "FK_LessonStudent_Lessons_LessonId",
                         column: x => x.LessonId,
                         principalTable: "Lessons",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_LessonToStudents_Students_StudentId",
+                        name: "FK_LessonStudent_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "Id",
@@ -47,20 +44,15 @@ namespace CoreMigration.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_LessonToStudents_LessonId",
-                table: "LessonToStudents",
-                column: "LessonId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LessonToStudents_StudentId",
-                table: "LessonToStudents",
+                name: "IX_LessonStudent_StudentId",
+                table: "LessonStudent",
                 column: "StudentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "LessonToStudents");
+                name: "LessonStudent");
 
             migrationBuilder.DropTable(
                 name: "Lessons");

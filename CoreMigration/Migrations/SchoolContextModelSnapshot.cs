@@ -52,31 +52,6 @@ namespace CoreMigration.Migrations
                     b.ToTable("Lessons");
                 });
 
-            modelBuilder.Entity("CoreMigration.Entity.LessonToStudent", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("LessonId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LessonName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LessonId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("LessonToStudents");
-                });
-
             modelBuilder.Entity("CoreMigration.Entity.Student", b =>
                 {
                     b.Property<int>("Id")
@@ -157,23 +132,19 @@ namespace CoreMigration.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CoreMigration.Entity.LessonToStudent", b =>
+            modelBuilder.Entity("LessonStudent", b =>
                 {
-                    b.HasOne("CoreMigration.Entity.Lesson", "Lesson")
-                        .WithMany()
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("LessonId")
+                        .HasColumnType("int");
 
-                    b.HasOne("CoreMigration.Entity.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
 
-                    b.Navigation("Lesson");
+                    b.HasKey("LessonId", "StudentId");
 
-                    b.Navigation("Student");
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("LessonStudent");
                 });
 
             modelBuilder.Entity("CoreMigration.Entity.Student", b =>
@@ -193,6 +164,21 @@ namespace CoreMigration.Migrations
                     b.Navigation("Department");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LessonStudent", b =>
+                {
+                    b.HasOne("CoreMigration.Entity.Lesson", null)
+                        .WithMany()
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CoreMigration.Entity.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CoreMigration.Entity.Department", b =>
